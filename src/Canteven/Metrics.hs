@@ -22,12 +22,13 @@ import qualified Canteven.Config as Config (canteven)
 
 
 -- | Read configuration, fork EKG server, and flush metrics to Carbon
-setupMetrics :: IO ()
+setupMetrics :: IO Store
 setupMetrics = do
   MetricsConfig {ekgHost, ekgPort, carbon} <- Config.canteven
   handle <- forkServer (pack ekgHost) ekgPort
   let store = serverMetricStore handle
   flushMetricsToCarbon carbon store
+  return store
 
 
 -- | Fork a thread to flush EKG metrics to Graphite.
