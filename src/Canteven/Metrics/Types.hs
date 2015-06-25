@@ -2,7 +2,7 @@
 
 module Canteven.Metrics.Types (
   MetricsConfig(MetricsConfig, ekgHost, ekgPort, carbon),
-  CarbonConfig(CarbonConfig, carbonOptions, CarbonDisabled)
+  CarbonConfig(CarbonConfig, carbonOptions)
 ) where
 
 import Control.Applicative ((<$>), (<*>))
@@ -43,7 +43,7 @@ defaultMetricsConfig = MetricsConfig {
 -- | Wrap @CarbonOptions@ to avoid orphan instances.
 data CarbonConfig = CarbonConfig {
     carbonOptions :: CarbonOptions
-  } | CarbonDisabled deriving (Show)
+  } deriving (Show)
 
 instance FromJSON CarbonConfig where
   parseJSON (Object config) = CarbonConfig <$> options
