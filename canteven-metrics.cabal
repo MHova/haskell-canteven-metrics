@@ -19,6 +19,7 @@ cabal-version:       >=1.10
 library
   exposed-modules:
     Canteven.Metrics
+    Canteven.Metrics.Aws
     Canteven.Metrics.Distribution
     Canteven.Metrics.Types
   -- other-modules:       
@@ -31,6 +32,8 @@ library
     ekg,
     ekg-carbon,
     ekg-core,
+    http-client,
+    text,
     time,
     transformers
   hs-source-dirs:      src
