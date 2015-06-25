@@ -1,3 +1,4 @@
+{-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NamedFieldPuns  #-}
 
@@ -38,7 +39,7 @@ setupMetrics manager = do
   MetricsConfig {ekgHost, ekgPort, carbon} <- Config.canteven
   handle <- forkServer (pack ekgHost) ekgPort
   let store = serverMetricStore handle
-  instanceId <- Aws.instanceId manager
+  !instanceId <- Aws.instanceId manager
   flushMetricsToCarbon carbon store instanceId
   return store
 
