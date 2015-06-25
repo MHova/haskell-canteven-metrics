@@ -1,4 +1,3 @@
-{-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE NamedFieldPuns  #-}
 
@@ -39,15 +38,15 @@ setupMetrics manager = do
   MetricsConfig {ekgHost, ekgPort, carbon} <- Config.canteven
   handle <- forkServer (pack ekgHost) ekgPort
   let store = serverMetricStore handle
-  !instanceId <- Aws.instanceId manager
-  flushMetricsToCarbon carbon store instanceId
+  flushMetricsToCarbon carbon store manager
   return store
 
 
 -- | Fork a thread to flush EKG metrics to Graphite.
-flushMetricsToCarbon :: Maybe CarbonConfig -> Store -> ByteString -> IO ()
+flushMetricsToCarbon :: Maybe CarbonConfig -> Store -> Manager -> IO ()
 flushMetricsToCarbon Nothing _ _ = return ()
-flushMetricsToCarbon (Just CarbonConfig {carbonOptions}) store instanceId =
+flushMetricsToCarbon (Just CarbonConfig {carbonOptions}) store manager = do
+  instanceId <- Aws.instanceId manager
   void $ forkCarbon (appendInstanceId instanceId carbonOptions) store
 
 
