@@ -6,11 +6,11 @@
 -- server and @ekg-carbon@.
 module Canteven.Metrics (
   setupMetrics,
-  add
+  sample
 ) where
 
 import Control.Monad (void)
-import Canteven.Metrics.Distribution (add)
+import Canteven.Metrics.Distribution (sample)
 import Canteven.Metrics.Types (MetricsConfig(MetricsConfig, ekgHost, ekgPort,
   carbon), CarbonConfig(CarbonConfig, carbonOptions))
 import Data.ByteString.Char8 (pack)

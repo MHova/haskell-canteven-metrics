@@ -1,17 +1,21 @@
 module Canteven.Metrics.Distribution (
-  add
+  sample
 ) where
 
+import Control.Monad.IO.Class (liftIO, MonadIO)
 import Data.Time.Clock (UTCTime, diffUTCTime, getCurrentTime)
 
 import qualified System.Metrics.Distribution as D (Distribution, add)
 
 
--- | Add a sample @distribution@ started at @start@.
-add :: D.Distribution -> UTCTime -> IO ()
-add distribution start = do
-  end <- getCurrentTime
-  D.add distribution $ timeDiff end start
+-- | Sample execution of @action@ to @distribution@.
+sample :: MonadIO m => D.Distribution -> m a -> m a
+sample distribution action = do
+  start <- liftIO getCurrentTime
+  result <- action
+  end <- liftIO getCurrentTime
+  liftIO $ D.add distribution $ timeDiff end start
+  return result
 
 
 -- | Compute time difference to store in a metric distribution.
