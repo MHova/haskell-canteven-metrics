@@ -16,7 +16,6 @@ import Canteven.Metrics.Types (MetricsConfig(MetricsConfig, ekgHost, ekgPort,
   carbon), CarbonConfig(CarbonConfig, carbonOptions))
 import Data.ByteString.Lazy (ByteString)
 import Data.ByteString.Char8 (pack)
-import Data.Text (append)
 import Data.Text.Lazy (toStrict)
 import Data.Text.Lazy.Encoding (decodeUtf8)
 import Network.HTTP.Client (Manager)
@@ -27,6 +26,7 @@ import System.Remote.Monitoring.Carbon (forkCarbon,
 
 import qualified Canteven.Config as Config (canteven)
 import qualified Canteven.Metrics.Aws as Aws (instanceId)
+import qualified Data.Text as T (concat)
 
 
 -- | Read configuration, fork EKG server, and flush metrics to Carbon.
@@ -56,4 +56,4 @@ appendInstanceId "" options = options
 appendInstanceId instanceId options@CarbonOptions {prefix} =
     options {prefix = newPrefix}
   where
-    newPrefix = foldr append prefix [".", toStrict . decodeUtf8 $ instanceId]
+    newPrefix = T.concat [prefix, ".", toStrict . decodeUtf8 $ instanceId]
