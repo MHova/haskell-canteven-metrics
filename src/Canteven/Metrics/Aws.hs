@@ -18,6 +18,7 @@ instanceId manager =
     request manager url `catch` err
   where
     url = "http://instance-data/latest/meta-data/instance-id"
+
     err :: HttpException -> IO ByteString
     err = const $ return ""
 
