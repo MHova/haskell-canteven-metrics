@@ -26,7 +26,7 @@ instance FromJSON MetricsConfig where
       Just config -> MetricsConfig
         <$> config .:? "host" .!= "0.0.0.0"
         <*> config .:? "port" .!= 8081
-        <*> config .:? "carbon" 
+        <*> config .:? "carbon"
   parseJSON value =
     fail $ "Couldn't parse metrics config from " ++ show value
 
