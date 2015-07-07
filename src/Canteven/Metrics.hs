@@ -10,6 +10,8 @@ module Canteven.Metrics (
   sample
 ) where
 
+import Control.Concurrent (threadDelay)
+import Control.Exception (SomeException)
 import Control.Monad (void)
 import Canteven.Metrics.Distribution (sample)
 import Canteven.Metrics.Types (MetricsConfig(MetricsConfig, ekgHost, ekgPort,
@@ -19,9 +21,10 @@ import Data.ByteString.Char8 (pack)
 import Data.Text.Lazy (toStrict)
 import Data.Text.Lazy.Encoding (decodeUtf8)
 import Network.HTTP.Client (Manager)
+import System.IO (stderr, hPutStrLn)
 import System.Metrics (Store)
 import System.Remote.Monitoring (forkServer, serverMetricStore)
-import System.Remote.Monitoring.Carbon (forkCarbon,
+import System.Remote.Monitoring.Carbon (forkCarbonRestart,
   CarbonOptions(CarbonOptions, prefix))
 
 import qualified Canteven.Config as Config (canteven)
@@ -46,8 +49,15 @@ setupMetrics manager = do
 flushMetricsToCarbon :: Maybe CarbonConfig -> Store -> Manager -> IO ()
 flushMetricsToCarbon Nothing _ _ = return ()
 flushMetricsToCarbon (Just CarbonConfig {carbonOptions}) store manager = do
-  instanceId <- Aws.instanceId manager
-  void $ forkCarbon (appendInstanceId instanceId carbonOptions) store
+    instanceId <- Aws.instanceId manager
+    let options = appendInstanceId instanceId carbonOptions
+    void $ forkCarbonRestart options store err
+  where
+    err :: SomeException -> IO () -> IO ()
+    err e restart = do
+      hPutStrLn stderr $ "canteven-metrics: " ++ show e
+      threadDelay 1000000
+      restart
 
 
 -- | Append EC2 instance's id to Carbon metrics prefix.
