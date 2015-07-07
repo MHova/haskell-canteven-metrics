@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                canteven-metrics
-version:             0.1.1.0
+version:             0.1.1.1
 synopsis:            I canteven setup and use EKG metrics
 -- description:         
 homepage:            https://github.com/SumAll/haskell-canteven-metrics
@@ -30,7 +30,7 @@ library
     bytestring,
     canteven-config,
     ekg,
-    ekg-carbon,
+    ekg-carbon >=1.0.4 && <1.1,
     ekg-core,
     http-client,
     text,
