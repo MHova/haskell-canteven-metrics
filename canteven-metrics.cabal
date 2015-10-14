@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                canteven-metrics
-version:             0.1.1.1
+version:             0.2.0.0
 synopsis:            I canteven setup and use EKG metrics
 -- description:
 homepage:            https://github.com/SumAll/haskell-canteven-metrics
