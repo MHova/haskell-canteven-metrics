@@ -5,9 +5,7 @@ module Canteven.Metrics.Types (
   CarbonConfig(CarbonConfig, carbonOptions)
 ) where
 
-import Control.Applicative ((<$>), (<*>))
 import Data.Aeson (FromJSON, parseJSON, Value(Object), (.:?), (.:), (.!=))
-import Data.ByteString (ByteString)
 import System.Remote.Monitoring.Carbon (CarbonOptions(CarbonOptions))
 
 

@@ -6,8 +6,8 @@ module Canteven.Metrics.Aws (
 
 import Control.Exception (catch)
 import Data.ByteString.Lazy (ByteString)
-import Network.HTTP.Client (Manager, httpLbs, parseUrl, Response(responseBody),
-  HttpException)
+import Network.HTTP.Client (Manager, httpLbs, parseUrlThrow,
+  Response(responseBody), HttpException)
 
 
 -- | Return EC2 instance's id.
@@ -26,6 +26,6 @@ instanceId manager =
 -- | Send a HTTP request to @url@.
 request :: Manager -> String -> IO ByteString
 request manager url = do
-  request <- parseUrl url
-  response <- httpLbs request manager
+  req <- parseUrlThrow url
+  response <- httpLbs req manager
   return $ responseBody response
