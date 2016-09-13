@@ -1,0 +1,8 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- '.'
+extra-deps:
+- canteven-config-1.0.1.0
+- ekg-carbon-1.0.5
+resolver: lts-6.12
