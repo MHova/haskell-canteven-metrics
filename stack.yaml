@@ -4,5 +4,6 @@ packages:
 - '.'
 extra-deps:
 - canteven-config-1.0.1.0
-- ekg-carbon-1.0.5
-resolver: lts-6.12
+- ekg-carbon-1.0.7
+- network-carbon-1.0.9
+resolver: lts-7.14

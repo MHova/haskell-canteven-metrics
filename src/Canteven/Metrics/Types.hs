@@ -39,7 +39,7 @@ defaultMetricsConfig = MetricsConfig {
 
 
 -- | Wrap @CarbonOptions@ to avoid orphan instances.
-data CarbonConfig = CarbonConfig {
+newtype CarbonConfig = CarbonConfig {
     carbonOptions :: CarbonOptions
   } deriving (Show)
 
